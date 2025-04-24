@@ -1,0 +1,144 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Manage Bookings - Admin Panel{% endblock %}
+
+{% block content %}
+<h1 class="mb-4"><i class="fas fa-calendar-check"></i> Manage Bookings</h1>
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <!-- In your admin navigation menu -->
+
+
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-list"></i> All Bookings</h5>
+            <div>
+                <button class="btn btn-sm btn-outline-light" id="btnFilterToday">Today's Check-ins</button>
+                <button class="btn btn-sm btn-outline-light ms-1" id="btnFilterUpcoming">Upcoming</button>
+                <button class="btn btn-sm btn-outline-light ms-1" id="btnFilterAll">All</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        {% if bookings %}
+        <div class="table-responsive">
+            <table class="table table-striped" id="bookingsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Guest</th>
+                        <th>Room No</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.b_id }}</td>
+                        <td>{{ booking.user.name }}</td>
+                        <td>{{ booking.room.room_no }}</td>
+                        <td data-date="{{ booking.check_in_date.strftime('%Y-%m-%d') }}">
+                            {{ booking.check_in_date.strftime('%Y-%m-%d') }}
+                        </td>
+                        <td>{{ booking.check_out_date.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            {% set nights = (booking.check_out_date - booking.check_in_date).days %}
+                            {{ nights }} night{% if nights != 1 %}s{% endif %}
+                        </td>
+                        <td>
+                            <span class="badge {% if booking.status == 'confirmed' %}bg-success{% elif booking.status == 'cancelled' %}bg-danger{% else %}bg-secondary{% endif %}">
+                                {{ booking.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('admin_booking_detail', booking_id=booking.b_id) }}" class="btn btn-sm btn-info">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                            {% if booking.status == 'confirmed' %}
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal{{ booking.b_id }}">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            
+                            <!-- Cancel Modal -->
+                            <div class="modal fade" id="cancelModal{{ booking.b_id }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-danger text-white">
+                                            <h5 class="modal-title">Confirm Cancellation</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to cancel booking #{{ booking.b_id }} for {{ booking.user.name }}?
+                                            <p class="text-danger mt-2"><strong>Note:</strong> This will make Room #{{ booking.room.room_no }} available for new bookings.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <form action="{{ url_for('admin_cancel_booking', booking_id=booking.b_id) }}" method="post">
+                                                <button type="submit" class="btn btn-danger">Cancel Booking</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No bookings found in the system.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Simple client-side filtering for bookings
+        const today = new Date().toISOString().split('T')[0];
+        
+        document.getElementById('btnFilterToday').addEventListener('click', function() {
+            filterTableRows(today);
+        });
+        
+        document.getElementById('btnFilterUpcoming').addEventListener('click', function() {
+            filterTableRows('upcoming');
+        });
+        
+        document.getElementById('btnFilterAll').addEventListener('click', function() {
+            // Show all rows
+            const rows = document.querySelectorAll('#bookingsTable tbody tr');
+            rows.forEach(row => row.style.display = '');
+        });
+        
+        function filterTableRows(filter) {
+            const rows = document.querySelectorAll('#bookingsTable tbody tr');
+            
+            rows.forEach(row => {
+                const dateCell = row.querySelector('td[data-date]');
+                const bookingDate = dateCell.getAttribute('data-date');
+                
+                if (filter === today && bookingDate === today) {
+                    row.style.display = '';
+                } else if (filter === 'upcoming' && bookingDate > today) {
+                    row.style.display = '';
+                } else if (filter === 'all') {
+                    row.style.display = '';
+                } else if (filter !== 'all' && filter !== 'upcoming') {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

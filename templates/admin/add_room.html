@@ -1,0 +1,62 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Add New Room - Admin Panel{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('admin_rooms') }}">Rooms</a></li>
+        <li class="breadcrumb-item active">Add New Room</li>
+    </ol>
+</nav>
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0"><i class="fas fa-plus"></i> Add New Room</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{{ url_for('admin_add_room') }}">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="room_no" class="form-label">Room Number*</label>
+                    <input type="text" class="form-control" id="room_no" name="room_no" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="type" class="form-label">Room Type*</label>
+                    <select class="form-control" id="type" name="type" required>
+                        <option value="">-- Select Room Type --</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Deluxe">Deluxe</option>
+                        <option value="Suite">Suite</option>
+                        <option value="Executive">Executive</option>
+                        <option value="Family">Family</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="price" class="form-label">Price per Night ($)*</label>
+                    <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-check mt-4">
+                        <input class="form-check-input" type="checkbox" id="is_available" name="is_available" checked>
+                        <label class="form-check-label" for="is_available">
+                            Available for booking
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{{ url_for('admin_rooms') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Add Room
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

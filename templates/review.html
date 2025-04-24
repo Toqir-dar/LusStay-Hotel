@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Review - LuxStay Hotel{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header text-center">
+    <div class="container">
+        <h1>Write a Review</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center">
+                <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('rooms') }}">Rooms</a></li>
+                <li class="breadcrumb-item active">Write a Review</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="form-container" data-aos="fade-up">
+                <!-- Room Details Section -->
+                <div class="text-center mb-4">
+                    <h3 class="section-title">{{ room.type }} Room #{{ room.room_no }}</h3>
+                    <p class="text-muted">Thank you for staying with us. Your feedback helps us improve our services.</p>
+                </div>
+
+                <!-- Review Form -->
+                <form method="POST" action="{{ url_for('submit_review', room_id=room.id) }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <!-- Star Rating -->
+                    <div class="mb-4">
+                        <label class="form-label">{{ form.rating.label }}</label>
+                        <div class="star-rating">
+                            <div class="rating-container d-flex align-items-center">
+                                <div id="star-rating-display" class="me-3">
+                                    {% for i in range(5) %}
+                                        <i class="far fa-star star-icon" data-rating="{{ i+1 }}"></i>
+                                    {% endfor %}
+                                </div>
+                                {{ form.rating(class="form-control d-none", id="rating-input") }}
+                            </div>
+                            {% if form.rating.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.rating.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Comment -->
+                    <div class="mb-4">
+                        <label class="form-label">{{ form.comment.label }}</label>
+                        {{ form.comment(class="form-control", rows=5, placeholder="Share your experience staying in this room...") }}
+                        {% if form.comment.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.comment.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        {{ form.submit(class="btn btn-primary") }}
+                        <a href="{{ url_for('room_details', room_id=room.id) }}" class="btn btn-outline-primary ms-2">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Reviews Guidelines -->
+            <div class="mt-5 feature-box" data-aos="fade-up" data-aos-delay="100">
+                <h4 class="feature-title">Review Guidelines</h4>
+                <ul class="mb-0">
+                    <li>Be honest and specific about your experience</li>
+                    <li>Mention both positive aspects and areas for improvement</li>
+                    <li>Keep your review respectful and constructive</li>
+                    <li>Include details that would be helpful for future guests</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star-icon');
+        const ratingInput = document.getElementById('rating-input');
+        
+        // Set initial state if there's a value
+        if (ratingInput.value) {
+            updateStars(ratingInput.value);
+        }
+        
+        // Add click event for each star
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = this.getAttribute('data-rating');
+                ratingInput.value = rating;
+                updateStars(rating);
+            });
+            
+            // Add hover effects
+            star.addEventListener('mouseenter', function() {
+                const rating = this.getAttribute('data-rating');
+                highlightStars(rating);
+            });
+            
+            star.addEventListener('mouseleave', function() {
+                // Return to the actual selected rating
+                if (ratingInput.value) {
+                    updateStars(ratingInput.value);
+                } else {
+                    resetStars();
+                }
+            });
+        });
+        
+        // Function to update stars based on rating
+        function updateStars(rating) {
+            stars.forEach(star => {
+                const starRating = star.getAttribute('data-rating');
+                if (starRating <= rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                    star.style.color = 'var(--accent-color)';
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                    star.style.color = '';
+                }
+            });
+        }
+        
+        // Function to highlight stars on hover
+        function highlightStars(rating) {
+            stars.forEach(star => {
+                const starRating = star.getAttribute('data-rating');
+                if (starRating <= rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                    star.style.color = 'var(--accent-color)';
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                    star.style.color = '';
+                }
+            });
+        }
+        
+        // Function to reset stars
+        function resetStars() {
+            stars.forEach(star => {
+                star.classList.remove('fas');
+                star.classList.add('far');
+                star.style.color = '';
+            });
+        }
+    });
+</script>
+{% endblock %}

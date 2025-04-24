@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}LuxStay Hotel - Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <h1 class="display-4 mb-4">Welcome to LuxStay Hotel, {{ current_user.name }}!</h1>
+        <p class="lead">Experience luxury and comfort like never before.</p>
+        
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Find Your Perfect Room</h3>
+                        <p class="card-text">Browse our selection of premium rooms and suites.</p>
+                        <a href="{{ url_for('rooms') }}" class="btn btn-primary">View Rooms</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Your Bookings</h3>
+                        <p class="card-text">Check your current and upcoming reservations.</p>
+                        <a href="{{ url_for('my_bookings') }}" class="btn btn-primary">View Bookings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if booking %}
+        <div class="card mt-5">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Your Latest Booking</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Room: {{ booking.room.name }}</h5>
+                        <p>Check-in: {{ booking.check_in_date.strftime('%B %d, %Y') }}</p>
+                        <p>Check-out: {{ booking.check_out_date.strftime('%B %d, %Y') }}</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="{{ url_for('my_bookings') }}" class="btn btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+<!-- Services Section -->
+<section class="services-section py-5 my-5">
+<div class="container">
+    <div class="text-center mb-5">
+        <h2 class="section-title">Our Premium Services</h2>
+        <p class="text-muted">Experience luxury and comfort with our exceptional hotel services</p>
+    </div>
+    
+    <div class="row g-4">
+        <!-- Service 1 -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-concierge-bell"></i>
+                </div>
+                <h3 class="feature-title">24/7 Concierge</h3>
+                <p>Our dedicated concierge team is available around the clock to assist with any requests, from dinner reservations to arranging personalized tours.</p>
+            </div>
+        </div>
+        
+        <!-- Service 2 -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3 class="feature-title">Fine Dining</h3>
+                <p>Indulge in exquisite cuisine at our award-winning restaurant featuring locally-sourced ingredients and an extensive selection of wines.</p>
+            </div>
+        </div>
+        
+        <!-- Service 3 -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-spa"></i>
+                </div>
+                <h3 class="feature-title">Luxury Spa</h3>
+                <p>Rejuvenate your body and mind with our premium spa services, including massages, facials, and holistic wellness treatments.</p>
+            </div>
+        </div>
+        
+        <!-- Service 4 -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <h3 class="feature-title">Fitness Center</h3>
+                <p>Stay active in our state-of-the-art fitness center, featuring modern equipment, personal trainers, and daily yoga classes.</p>
+            </div>
+        </div>
+        
+        <!-- Service 5 -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-swimming-pool"></i>
+                </div>
+                <h3 class="feature-title">Infinity Pool</h3>
+                <p>Relax and unwind in our stunning infinity pool with panoramic views, complemented by premium poolside service.</p>
+            </div>
+        </div>
+        
+        <!-- Service 6 -->
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-shuttle-van"></i>
+                </div>
+                <h3 class="feature-title">Airport Transfer</h3>
+                <p>Enjoy seamless travel with our luxury airport transfer service, available 24/7 with professional chauffeurs.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Services CTA -->
+    <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="700">
+        <p class="mb-4">Discover the perfect blend of luxury and comfort during your stay</p>
+        <a href="#" class="btn btn-primary">Explore All Services</a>
+    </div>
+</div>
+</section>
+
+<!-- Additional Service Highlights Section -->
+<section class="service-highlights py-5 bg-light">
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-lg-6" data-aos="fade-right">
+            <img src="static/images/hotel.jpg" alt="Premium Services" class="img-fluid rounded-3 shadow" style="object-fit: cover;">
+        </div>
+        <div class="col-lg-6 ps-lg-5 mt-4 mt-lg-0" data-aos="fade-left">
+            <h3 class="mb-4" style="font-family: 'Cormorant Garamond', serif; font-weight: 700; color: var(--secondary-color);">Experience Unparalleled Luxury</h3>
+            <p class="mb-4">At LuxStay Hotel, we believe in creating memorable experiences through exceptional service. Our dedicated team ensures that every aspect of your stay exceeds expectations.</p>
+            <div class="d-flex align-items-center mb-3">
+                <div class="me-3" style="color: var(--accent-color);"><i class="fas fa-check-circle fa-lg"></i></div>
+                <div>
+                    <h5 class="mb-0" style="font-weight: 600;">Personalized Experience</h5>
+                    <p class="mb-0 text-muted">Tailored services to meet your unique preferences</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+                <div class="me-3" style="color: var(--accent-color);"><i class="fas fa-check-circle fa-lg"></i></div>
+                <div>
+                    <h5 class="mb-0" style="font-weight: 600;">Premium Amenities</h5>
+                    <p class="mb-0 text-muted">Top-quality products and facilities for your comfort</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="me-3" style="color: var(--accent-color);"><i class="fas fa-check-circle fa-lg"></i></div>
+                <div>
+                    <h5 class="mb-0" style="font-weight: 600;">Exceptional Staff</h5>
+                    <p class="mb-0 text-muted">Professional team dedicated to your satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}   

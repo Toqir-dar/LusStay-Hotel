@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">My Bookings</h1>
+    
+    {% if bookings %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Room</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.b_id }}</td>
+                    <td>{{ current_user.name }}</td>
+                    <td>{{ current_user.email }}</td>
+                    <td>Room {{ booking.room.room_no }} ({{ booking.room.type }})</td>
+                    <td>{{ booking.check_in_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ booking.check_out_date.strftime('%Y-%m-%d') }}</td>
+                    <td>
+                        <span class="badge bg-{{ 'success' if booking.status == 'confirmed' else 'warning' }}">
+                            {{ booking.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('cancel_booking', booking_id=booking.b_id) }}" 
+                              onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel Booking</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <p>You don't have any bookings yet.</p>
+        <a href="{{ url_for('rooms') }}" class="btn btn-primary">Browse Rooms</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block content1 %}
+    <div class="alert alert-info" role="alert">
+        Here are your current bookings. You can cancel any booking if needed.
+    </div>
+{% endblock %}

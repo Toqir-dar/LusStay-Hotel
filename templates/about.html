@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block title %}LuxStay Hotel - About Us{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1 class="mb-2">About LuxStay Hotel</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">About Us</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Hotel Introduction -->
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6" data-aos="fade-right">
+            <h2 class="section-title">Our Story</h2>
+            <p class="mb-4">Founded in 2010, LuxStay Hotel has been a cornerstone of luxury hospitality for over 15 years. We began with a simple vision: to create a sanctuary where travelers could experience unparalleled comfort, personalized service, and exquisite amenities.</p>
+            <p>Today, we're proud to be recognized as one of the premier luxury accommodations in the region, having welcomed guests from over 100 countries and received numerous industry accolades for our commitment to excellence.</p>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+            <div class="position-relative rounded overflow-hidden shadow-lg">
+                <img src="static/images/hotel.jpg" alt="LuxStay Hotel Exterior" class="img-fluid w-100">
+                <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: rgba(29, 53, 87, 0.8);">
+                    <p class="text-white m-0">The LuxStay Hotel main building, established 2010</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Our Mission -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="section-title">Our Mission</h2>
+        </div>
+        <div class="col-lg-8 mx-auto">
+            <div class="feature-box text-center" data-aos="fade-up">
+                <div class="feature-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="lead">"To create memorable experiences through exceptional service, attention to detail, and genuine care for our guests' comfort and satisfaction."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Values -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="section-title">Our Core Values</h2>
+        </div>
+        
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3 class="feature-title">Excellence</h3>
+                <p>We strive for excellence in every aspect of our service, from room preparation to guest interaction.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3 class="feature-title">Integrity</h3>
+                <p>We operate with transparency, honesty, and ethical practices in all our business dealings.</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3 class="feature-title">Sustainability</h3>
+                <p>We are committed to environmentally responsible practices and supporting our local community.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Our Facilities -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="section-title">World-Class Facilities</h2>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card h-100 hover-zoom">
+                <img src="static/images/pool.jpg" alt="Infinity Pool" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Infinity Pool</h5>
+                    <p class="card-text">Our rooftop infinity pool offers breathtaking views of the city skyline.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card h-100 hover-zoom">
+                <img src="static/images/spa.webp" alt="Spa & Wellness" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Spa & Wellness</h5>
+                    <p class="card-text">Rejuvenate your body and mind at our luxurious spa center.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card h-100 hover-zoom">
+                <img src="static/images/din.jpg" alt="Fine Dining" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Fine Dining</h5>
+                    <p class="card-text">Experience culinary excellence at our award-winning restaurants.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400">
+            <div class="card h-100 hover-zoom">
+                <img src="static/images/conference.jpg" alt="Conference Rooms" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Conference Rooms</h5>
+                    <p class="card-text">State-of-the-art meeting spaces for your business needs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Our Team -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="section-title">Meet Our Team</h2>
+        </div>
+        
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card text-center">
+                <div class="p-4">
+                    <div class="rounded-circle overflow-hidden mx-auto mb-4" style="width: 150px; height: 150px;">
+                        <img src="static/images/mem1.jpg" alt="General Manager" class="img-fluid">
+                    </div>
+                    <h4>Emily Richardson</h4>
+                    <p class="text-muted">General Manager</p>
+                    <p>With over 20 years in luxury hospitality, Emily ensures every aspect of your stay exceeds expectations.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card text-center">
+                <div class="p-4">
+                    <div class="rounded-circle overflow-hidden mx-auto mb-4" style="width: 150px; height: 150px;">
+                        <img src="static/images/mem2.jpg" alt="Executive Chef" class="img-fluid">
+                    </div>
+                    <h4>Marco Bellini</h4>
+                    <p class="text-muted">Executive Chef</p>
+                    <p>A Michelin-starred chef bringing innovative culinary creations to our dining experiences.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card text-center">
+                <div class="p-4">
+                    <div class="rounded-circle overflow-hidden mx-auto mb-4" style="width: 150px; height: 150px;">
+                        <img src="static/images/mem3.jpg" alt="Concierge Manager" class="img-fluid">
+                    </div>
+                    <h4>James Wilson</h4>
+                    <p class="text-muted">Concierge Manager</p>
+                    <p>James and his team are dedicated to making your every wish come true during your stay with us.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="section-title">Guest Testimonials</h2>
+        </div>
+        
+        <div class="col-lg-8 mx-auto">
+            <div class="card" data-aos="fade-up">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center">
+                            <div class="rounded-circle overflow-hidden mx-auto mb-3" style="width: 100px; height: 100px;">
+                                <img src="static/images/tst1.jpg" alt="Guest testimonial" class="img-fluid">
+                            </div>
+                            <h5 class="mb-0">Sarah J.</h5>
+                            <p class="text-muted mb-0">New York, USA</p>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="text-primary mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <blockquote class="mb-0">
+                                <p class="font-italic">"LuxStay Hotel exceeded all my expectations. The staff went above and beyond to make our anniversary trip special. The rooms are immaculate and the amenities are world-class. We'll definitely be returning!"</p>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Awards & Recognition -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="section-title">Awards & Recognition</h2>
+        </div>
+        
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-box text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3 class="feature-title">Five-Star Excellence</h3>
+                <p>Recognized by Global Hospitality Standards for five consecutive years</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-box text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="feature-title">Best Luxury Hotel</h3>
+                <p>Travel & Leisure Magazine's Top Luxury Hotel Award 2023</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-box text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3 class="feature-title">Green Certification</h3>
+                <p>Certified for our commitment to sustainable practices</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-primary text-white overflow-hidden" data-aos="fade-up">
+                <div class="card-body p-5 text-center">
+                    <h3 class="mb-3">Experience the LuxStay Difference</h3>
+                    <p class="lead mb-4">Book your stay with us and discover why our guests return year after year.</p>
+                    <a href="{{ url_for('rooms') }}" class="btn btn-light btn-lg">View Our Rooms</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block content1 %}
+    <div class="alert alert-info" role="alert">
+        Welcome to LuxStay Hotel! We are dedicated to providing you with the best experience possible.
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Reinitialize AOS
+        AOS.refresh();
+    });
+</script>
+{% endblock %}

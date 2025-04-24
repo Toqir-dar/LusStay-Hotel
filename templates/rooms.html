@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}LuxStay Hotel - Available Rooms{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1 class="mb-2">Available Rooms</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Rooms</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        {% for room in rooms %}
+        <div class="col-md-4 mb-4">
+            <div class="booking-card">
+                <div class="room-img-container">
+                    <img src="{{ url_for('static', filename='images/room-' + room.r_id|string + '.png') }}"
+                        class="room-img" alt="Room {{ room.room_no }}"
+                        onerror="this.src='{{ url_for('static', filename='images/room1.jpeg') }}'">
+                    <div class="room-badge">{{ room.type }}</div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Room {{ room.room_no }}</h5>
+                    <p class="card-text">{{ room.type }} Room with premium amenities and comfortable furnishings.</p>
+                    <span class="price-tag">${{ room.price }} <span>per night</span></span>
+                    
+                    <div class="room-features">
+                        <div class="room-feature"><i class="fas fa-bed"></i> Luxurious Bed</div>
+                        <div class="room-feature"><i class="fas fa-wifi"></i> Free WiFi</div>
+                        <div class="room-feature"><i class="fas fa-snowflake"></i> AC</div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <strong>Status:</strong>
+                            {% if room.is_available %}
+                                <span class="badge bg-success">Available</span>
+                            {% else %}
+                                <span class="badge bg-danger">Booked</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if room.is_available %}
+                    <div class="d-grid">
+                        <a href="{{ url_for('book_room', room_id=room.r_id) }}" class="btn btn-primary">
+                            <i class="fas fa-calendar-check me-2"></i>Book Now
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="d-grid">
+                        <button class="btn btn-secondary" disabled>
+                            <i class="fas fa-ban me-2"></i>Not Available
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>No rooms available at the moment. Please check back later.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block content1 %}
+<div class="alert alert-info" role="alert">
+    Please fill in the form to create a new account.    
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const elements = document.querySelectorAll('[data-aos]');
+        elements.forEach(el => {
+            el.removeAttribute('data-aos');
+            el.removeAttribute('data-aos-delay');
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+        });
+        
+
+        const cards = document.querySelectorAll('.booking-card');
+        cards.forEach(card => {
+            card.style.opacity = '1';
+            card.style.transform = 'none';
+        });
+    });
+</script>
+{% endblock %}

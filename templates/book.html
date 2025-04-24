@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}Book Room{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Book Room</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <img src="{{ url_for('static', filename='images/room-' + room.r_id|string + '.jpg') }}" 
+                     class="card-img-top" alt="Room {{ room.room_no }}"
+                     onerror="this.src='{{ url_for('static', filename='images/room1.jpeg') }}'">
+                <div class="card-body">
+                    <h5 class="card-title">Room {{ room.room_no }}</h5>
+                    <p class="card-text">{{ room.type }} Room</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Type:</strong> {{ room.type }}</li>
+                        <li class="list-group-item"><strong>Price:</strong> ${{ room.price }} per night</li>
+                        {% if avg_rating > 0 %}
+                        <li class="list-group-item">
+                            <strong>Rating:</strong> 
+                            <span class="rating-display">
+                                {% for i in range(5) %}
+                                    {% if i < avg_rating|int %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% elif i < avg_rating|round(0, 'ceil') and (avg_rating - i) >= 0.5 %}
+                                        <i class="fas fa-star-half-alt text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                {{ avg_rating|round(1) }} / 5 ({{ reviews|length }} reviews)
+                            </span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Reviews Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Guest Reviews</h5>
+                </div>
+                <div class="card-body">
+                    {% if reviews %}
+                        <div class="reviews-container">
+                            {% for review in reviews %}
+                                <div class="review-item mb-3 p-3 {% if loop.index > 3 %}d-none more-reviews{% endif %}" style="border-bottom: 1px solid #eee;">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <strong>{{ review.user.name }}</strong>
+                                            <span class="text-muted small ms-2">{{ review.review_date.strftime('%b %d, %Y') }}</span>
+                                        </div>
+                                        <div class="rating-display">
+                                            {% for i in range(5) %}
+                                                {% if i < review.rating %}
+                                                    <i class="fas fa-star text-warning"></i>
+                                                {% else %}
+                                                    <i class="far fa-star text-warning"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">{{ review.comment }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        {% if reviews|length > 3 %}
+                            <div class="text-center mt-3">
+                                <button class="btn btn-outline-secondary btn-sm" id="show-more-reviews">
+                                    Show More Reviews
+                                </button>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-center text-muted">No reviews yet for this room.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Booking Details</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                    
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            {{ form.name(class="form-control", id="name") }}
+                            {% if form.name.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.name.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            {{ form.email(class="form-control", id="email") }}
+                            {% if form.email.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="check_in" class="form-label">Check-in Date</label>
+                            {{ form.check_in(class="form-control", id="check_in") }}
+                            {% if form.check_in.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.check_in.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="check_out" class="form-label">Check-out Date</label>
+                            {{ form.check_out(class="form-control", id="check_out") }}
+                            {% if form.check_out.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.check_out.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                            <a href="{{ url_for('rooms') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="reviews mt-5">
+    <h3>Reviews</h3>
+    
+    {% if room.reviews %}
+        <div class="average-rating mb-3">
+            <strong>Average Rating:</strong> {{ "%.1f"|format(room.average_rating|default(0)) }}/5
+        </div>
+        
+        {% for review in room.reviews %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">{{ review.user.username }}</h5>
+                        <div class="rating">
+                            {% for i in range(5) %}
+                                {% if i < review.rating %}
+                                    <span class="text-warning">★</span>
+                                {% else %}
+                                    <span class="text-muted">☆</span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <p class="card-text">{{ review.comment }}</p>
+                    <small class="text-muted">Posted on {{ review.review_date.strftime('%B %d, %Y') }}</small>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No reviews yet. Be the first to leave a review!</p>
+    {% endif %}
+    
+    <a href="{{ url_for('add_review', room_id=room.r_id) }}" class="btn btn-primary">Write a Review</a>
+</div>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show more reviews functionality
+        const showMoreBtn = document.getElementById('show-more-reviews');
+        if (showMoreBtn) {
+            showMoreBtn.addEventListener('click', function() {
+                const hiddenReviews = document.querySelectorAll('.more-reviews');
+                hiddenReviews.forEach(review => {
+                    review.classList.remove('d-none');
+                });
+                showMoreBtn.style.display = 'none';
+            });
+        }
+    });
+</script>
+{% endblock %}

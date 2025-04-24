@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Manage Reviews</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">All Reviews</h5>
+            
+            {% if reviews %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Room</th>
+                                <th>User</th>
+                                <th>Rating</th>
+                                <th>Date</th>
+                                <th>Comment</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for review in reviews %}
+                                <tr>
+                                    <td>{{ review.room.room_no }} ({{ review.room.type }})</td>
+                                    <td>{{ review.user.name }}</td>
+                                    <td>
+                                        {% for i in range(5) %}
+                                            {% if i < review.rating %}
+                                                <span class="text-warning">★</span>
+                                            {% else %}
+                                                <span class="text-muted">☆</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ review.review_date.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ review.comment|truncate(50) }}</td>
+                                    <td>
+                                        <form method="POST" action="{{ url_for('admin_delete_review', review_id=review.id) }}" onsubmit="return confirm('Are you sure you want to delete this review?');">
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No reviews available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

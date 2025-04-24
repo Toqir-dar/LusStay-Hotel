@@ -1,0 +1,92 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Booking Detail - Admin Panel{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('admin_bookings') }}">Bookings</a></li>
+        <li class="breadcrumb-item active">Booking #{{ booking.b_id }}</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle"></i> Booking Information #{{ booking.b_id }}
+                    <span class="badge float-end {% if booking.status == 'confirmed' %}bg-success{% elif booking.status == 'cancelled' %}bg-danger{% else %}bg-secondary{% endif %}">
+                        {{ booking.status }}
+                    </span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Check-in Date:</h6>
+                        <p>{{ booking.check_in_date.strftime('%Y-%m-%d') }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Check-out Date:</h6>
+                        <p>{{ booking.check_out_date.strftime('%Y-%m-%d') }}</p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Duration:</h6>
+                        <p>{{ (booking.check_out_date - booking.check_in_date).days }} nights</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Total Price:</h6>
+                        <p>${{ "%.2f"|format(booking.room.price * (booking.check_out_date - booking.check_in_date).days) }}</p>
+                    </div>
+                </div>
+                
+                {% if booking.status == 'confirmed' %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelBookingModal">
+                        <i class="fas fa-times"></i> Cancel Booking
+                    </button>
+                </div>
+                
+                <!-- Cancel Booking Modal -->
+                <div class="modal fade" id="cancelBookingModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title">Confirm Cancellation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to cancel this booking?
+                                <p class="text-danger mt-2"><strong>Note:</strong> This will make Room #{{ booking.room.room_no }} available for new bookings.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <form action="{{ url_for('admin_cancel_booking', booking_id=booking.b_id) }}" method="post">
+                                    <button type="submit" class="btn btn-danger">Cancel Booking</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-user"></i> Guest Information</h5>
+            </div>
+            <div class="card-body">
+                <h6 class="fw-bold">Name:</h6>
+                <p>{{ booking.user.name }}</p>
+                
+                <h6 class="fw-bold">Email:</h6>
+                <p>{{ booking.user.email }}</p>
+                
+                {% if booking.user.phone %}
