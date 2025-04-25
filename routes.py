@@ -94,20 +94,6 @@ def logout():
 @login_required
 def rooms():
     all_rooms = Room.query.all()
-    # total_ratings = sum(room.rating for room in all_rooms if hasattr(room, 'rating') and room.rating is not None)
-    # count_ratings = sum(1 for room in all_rooms if hasattr(room, 'rating') and room.rating is not None)
-    # avg_rating = total_ratings / count_ratings if count_ratings > 0 else 0
-
-    # rating_counts = [0, 0, 0, 0, 0]  # Initialize counts for ratings 1-5
-    # for room in all_rooms:
-    #     if hasattr(room, 'rating') and room.rating is not None:
-    #         # Assuming rating is an integer 1-5
-    #         rating_idx = int(room.rating) - 1  # Convert to 0-based index
-    #         if 0 <= rating_idx < 5:  # Ensure it's within range
-    #             rating_counts[rating_idx] += 1
-
-    
-    # selected_room = all_rooms[0] if all_rooms else None 
 
     return render_template('rooms.html', rooms=all_rooms)
 
