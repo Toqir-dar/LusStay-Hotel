@@ -93,7 +93,30 @@ def logout():
 @app.route('/rooms')
 @login_required
 def rooms():
-    all_rooms = Room.query.all()
+    # Get filter parameters
+    room_type = request.args.get('type')
+    min_price = request.args.get('min_price')
+    max_price = request.args.get('max_price')
+    available_only = request.args.get('available')
+    
+    # Start with base query
+    query = Room.query
+    
+    # Apply filters
+    if room_type:
+        query = query.filter(Room.type == room_type)
+    
+    if min_price:
+        query = query.filter(Room.price >= float(min_price))
+    
+    if max_price:
+        query = query.filter(Room.price <= float(max_price))
+    
+    if available_only == '1':
+        query = query.filter(Room.is_available == True)
+    
+    # Get filtered rooms
+    all_rooms = query.all()
 
     return render_template('rooms.html', rooms=all_rooms)
 
@@ -185,6 +208,7 @@ def admin_required(f):
 def admin_dashboard():
     rooms_count = Room.query.count()
     bookings_count = Booking.query.count()
+    bookings = Booking.query.all()
     users_count = User.query.count()
     
     recent_bookings = Booking.query.options(
@@ -194,6 +218,7 @@ def admin_dashboard():
     
     return render_template(
         'admin/dashboard.html', 
+        bookings=bookings,
         rooms_count=rooms_count,
         bookings_count=bookings_count,
         users_count=users_count,

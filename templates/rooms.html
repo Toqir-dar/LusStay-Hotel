@@ -15,6 +15,59 @@
 </div>
 
 <div class="container">
+    <!-- Filter Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filter Rooms</h5>
+                </div>
+                <div class="card-body">
+                    <form id="roomFilterForm" method="GET" action="{{ url_for('rooms') }}">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="roomType" class="form-label">Room Type</label>
+                                <select class="form-select" id="roomType" name="type">
+                                    <option value="">All Types</option>
+                                    <option value="Standard" {% if request.args.get('type') == 'Standard' %}selected{% endif %}>Standard</option>
+                                    <option value="Deluxe" {% if request.args.get('type') == 'Deluxe' %}selected{% endif %}>Deluxe</option>
+                                    <option value="Suite" {% if request.args.get('type') == 'Suite' %}selected{% endif %}>Suite</option>
+                                    <option value="Executive" {% if request.args.get('type') == 'Executive' %}selected{% endif %}>Executive</option>
+                                    <option value="Family" {% if request.args.get('type') == 'Family' %}selected{% endif %}>Family</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="priceRange" class="form-label">Price Range (per night)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" id="minPrice" name="min_price" placeholder="Min" min="0" value="{{ request.args.get('min_price', '') }}">
+                                    <span class="input-group-text">to</span>
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" id="maxPrice" name="max_price" placeholder="Max" min="0" value="{{ request.args.get('max_price', '') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="availability" class="form-label">Availability</label>
+                                <select class="form-select" id="availability" name="available">
+                                    <option value="">All Rooms</option>
+                                    <option value="1" {% if request.args.get('available') == '1' %}selected{% endif %}>Available Only</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="fas fa-search me-1"></i>Apply Filters
+                            </button>
+                            <a href="{{ url_for('rooms') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-undo me-1"></i>Reset
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         {% for room in rooms %}
         <div class="col-md-4 mb-4">
@@ -66,29 +119,18 @@
         {% else %}
         <div class="col-12">
             <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i>No rooms available at the moment. Please check back later.
+                <i class="fas fa-info-circle me-2"></i>No rooms available with the selected filters. Try adjusting your criteria or <a href="{{ url_for('rooms') }}">view all rooms</a>.
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
-
-
-
 {% endblock %}
-
-{% block content1 %}
-<div class="alert alert-info" role="alert">
-    Please fill in the form to create a new account.    
-</div>
-{% endblock %}
-
 
 {% block scripts %}
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
-
+        // Remove AOS animations if they exist
         const elements = document.querySelectorAll('[data-aos]');
         elements.forEach(el => {
             el.removeAttribute('data-aos');
@@ -97,11 +139,25 @@
             el.style.transform = 'none';
         });
         
-
+        // Make sure cards are visible
         const cards = document.querySelectorAll('.booking-card');
         cards.forEach(card => {
             card.style.opacity = '1';
             card.style.transform = 'none';
+        });
+        
+        // Form validation for price range
+        const minPriceInput = document.getElementById('minPrice');
+        const maxPriceInput = document.getElementById('maxPrice');
+        
+        document.getElementById('roomFilterForm').addEventListener('submit', function(e) {
+            const minPrice = Number(minPriceInput.value);
+            const maxPrice = Number(maxPriceInput.value);
+            
+            if (minPrice && maxPrice && minPrice > maxPrice) {
+                e.preventDefault();
+                alert('Minimum price cannot be greater than maximum price');
+            }
         });
     });
 </script>
